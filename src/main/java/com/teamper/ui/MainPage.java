@@ -5,9 +5,6 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 
-/**
- * Created by armoleon on 21.02.2016.
- */
 @SpringUI
 public class MainPage extends UI {
 
