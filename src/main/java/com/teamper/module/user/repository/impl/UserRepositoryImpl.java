@@ -1,4 +1,4 @@
-package com.teamper.repository.impl;
+package com.teamper.module.user.repository.impl;
 
 import org.springframework.stereotype.Repository;
 
