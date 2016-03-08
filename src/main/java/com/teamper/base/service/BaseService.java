@@ -1,4 +1,4 @@
 package com.teamper.base.service;
 
-public class BaseService {
+public interface BaseService {
 }

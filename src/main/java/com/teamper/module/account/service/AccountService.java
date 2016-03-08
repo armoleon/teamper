@@ -1,4 +1,6 @@
 package com.teamper.module.account.service;
 
-public interface AccountService {
+import com.teamper.base.service.BaseService;
+
+public interface AccountService extends BaseService {
 }
