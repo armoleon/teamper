@@ -2,7 +2,9 @@ package com.teamper.ui.module.login.view;
 
 import com.teamper.ui.event.UILoginEvent;
 import com.teamper.ui.event.bus.UIEventBus;
+import com.teamper.ui.message.UIMessageManager;
 import com.teamper.ui.module.login.model.dto.CredentialUIDto;
+import com.teamper.ui.module.login.model.property.LoginProperty;
 import com.teamper.ui.notification.UINotificationManager;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
@@ -25,6 +27,9 @@ public class LoginView extends VerticalLayout implements View {
     @Autowired
     private UINotificationManager uiNotificationManager;
 
+    @Autowired
+    private UIMessageManager uiMessageManager;
+
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         setSizeFull();
@@ -35,9 +40,8 @@ public class LoginView extends VerticalLayout implements View {
     }
 
     private void notifyLoginMessage() {
-        String title = "Welcome to Dashboard Demo";
-        String description = "<span>This application is not real, it only demonstrates an application built with the " +
-                "<a href=\"https://vaadin.com\">Vaadin framework</a>.</span> <span>No username or password is required, just click the <b>Sign In</b> button to continue.</span>";
+        String title = uiMessageManager.getMessage(LoginProperty.NOTIFICATION_TITLE);
+        String description = uiMessageManager.getMessage(LoginProperty.NOTIFICATION_DESCRIPTION);
         uiNotificationManager.notify(title, description, 5000);
     }
 
@@ -50,7 +54,7 @@ public class LoginView extends VerticalLayout implements View {
 
         loginPanel.addComponent(buildLabels());
         loginPanel.addComponent(buildFields());
-        loginPanel.addComponent(new CheckBox("Remember me", true));
+        loginPanel.addComponent(new CheckBox(uiMessageManager.getMessage(LoginProperty.LANG_REMEMBER), true));
         return loginPanel;
     }
 
@@ -58,13 +62,13 @@ public class LoginView extends VerticalLayout implements View {
         CssLayout labels = new CssLayout();
         labels.addStyleName("labels");
 
-        Label welcome = new Label("Welcome");
+        Label welcome = new Label(uiMessageManager.getMessage(LoginProperty.LANG_WELCOME));
         welcome.setSizeUndefined();
         welcome.addStyleName(ValoTheme.LABEL_H4);
         welcome.addStyleName(ValoTheme.LABEL_COLORED);
         labels.addComponent(welcome);
 
-        Label title = new Label("QuickTickets Dashboard");
+        Label title = new Label(uiMessageManager.getMessage(LoginProperty.LANG_TITLE));
         title.setSizeUndefined();
         title.addStyleName(ValoTheme.LABEL_H3);
         title.addStyleName(ValoTheme.LABEL_LIGHT);
@@ -77,15 +81,15 @@ public class LoginView extends VerticalLayout implements View {
         fields.setSpacing(true);
         fields.addStyleName("fields");
 
-        final TextField username = new TextField("Username");
+        final TextField username = new TextField(uiMessageManager.getMessage(LoginProperty.LANG_EMAIL));
         username.setIcon(FontAwesome.USER);
         username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
-        final PasswordField password = new PasswordField("Password");
+        final PasswordField password = new PasswordField(uiMessageManager.getMessage(LoginProperty.LANG_PASSWORD));
         password.setIcon(FontAwesome.LOCK);
         password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
-        final Button signin = new Button("Sign In");
+        final Button signin = new Button(uiMessageManager.getMessage(LoginProperty.LANG_SIGNIN));
         signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
         signin.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         signin.focus();
