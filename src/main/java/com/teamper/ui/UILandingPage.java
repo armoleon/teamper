@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Locale;
 
 @SpringUI
-@Theme("valo")
+@Theme("teamper")
 @Title("EPuanla.com")
 public class UILandingPage extends UI implements UIEventListener<UILoginEvent> {
 

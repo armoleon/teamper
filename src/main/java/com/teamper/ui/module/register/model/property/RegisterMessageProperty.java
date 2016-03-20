@@ -1,6 +1,6 @@
-package com.teamper.ui.module.login.model.property;
+package com.teamper.ui.module.register.model.property;
 
-public class LoginProperty {
+public class RegisterMessageProperty {
     public static final String NOTIFICATION_TITLE = "ui.login.view.notification.title";
     public static final String NOTIFICATION_DESCRIPTION = "ui.login.view.notification.description";
     public static final String LANG_REMEMBER = "ui.login.view.lang.remember";
