@@ -7,6 +7,7 @@ import com.teamper.ui.message.UIMessageManager;
 import com.teamper.ui.module.login.model.dto.CredentialUIDto;
 import com.teamper.ui.module.login.view.LoginView;
 import com.teamper.ui.module.main.MainView;
+import com.teamper.ui.module.root.view.DefaultView;
 import com.teamper.ui.module.root.view.RootView;
 import com.teamper.ui.navigation.UINavigator;
 import com.vaadin.annotations.Theme;
@@ -25,7 +26,7 @@ import java.util.Locale;
 
 @SpringUI
 @Theme("teamper")
-@Title("EPuanla.com")
+@Title("Teamper.com")
 public class UILandingPage extends UI implements UIEventListener<UILoginEvent> {
 
     @Autowired
@@ -46,14 +47,14 @@ public class UILandingPage extends UI implements UIEventListener<UILoginEvent> {
     protected void init(VaadinRequest vaadinRequest) {
         //setLocalization(vaadinRequest.getLocale());
         setLocalization(new Locale("tr"));
-
         Responsive.makeResponsive(this);
         addStyleName(ValoTheme.UI_WITH_MENU);
         RootView rootView = new RootView();
         setContent(rootView);
-        Navigator navigator = new Navigator(this, rootView.getViewContainer());
+        Navigator navigator = new Navigator(this, this);
         navigator.addProvider(springViewProvider);
         uiNavigator.setNavigator(navigator);
+        setContent(new DefaultView());
         uiEventBus.register(this);
     }
 
