@@ -9,4 +9,5 @@ public class LoginMessageProperty {
     public static final String LANG_EMAIL = "ui.login.view.lang.email";
     public static final String LANG_PASSWORD = "ui.login.view.lang.password";
     public static final String LANG_SIGNIN = "ui.login.view.lang.signin";
+    public static final String LANG_SIGNUP = "ui.login.view.lang.signup";
 }

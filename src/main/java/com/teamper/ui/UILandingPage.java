@@ -8,18 +8,15 @@ import com.teamper.ui.module.login.model.dto.CredentialUIDto;
 import com.teamper.ui.module.login.view.LoginView;
 import com.teamper.ui.module.main.MainView;
 import com.teamper.ui.module.root.view.DefaultView;
-import com.teamper.ui.module.root.view.RootView;
 import com.teamper.ui.navigation.UINavigator;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.navigator.Navigator;
-import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Locale;
@@ -47,15 +44,19 @@ public class UILandingPage extends UI implements UIEventListener<UILoginEvent> {
     protected void init(VaadinRequest vaadinRequest) {
         //setLocalization(vaadinRequest.getLocale());
         setLocalization(new Locale("tr"));
-        Responsive.makeResponsive(this);
-        addStyleName(ValoTheme.UI_WITH_MENU);
-        RootView rootView = new RootView();
-        setContent(rootView);
+        //    Responsive.makeResponsive(this);
+        //    addStyleName(ValoTheme.UI_WITH_MENU);
+        // RootView rootView = new RootView();
+        // setContent(rootView);
+        addtoNavigator();
+        setContent(new DefaultView());
+        uiEventBus.register(this);
+    }
+
+    private void addtoNavigator() {
         Navigator navigator = new Navigator(this, this);
         navigator.addProvider(springViewProvider);
         uiNavigator.setNavigator(navigator);
-        setContent(new DefaultView());
-        uiEventBus.register(this);
     }
 
     private void setLocalization(Locale locale) {

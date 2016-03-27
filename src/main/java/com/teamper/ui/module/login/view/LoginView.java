@@ -3,9 +3,12 @@ package com.teamper.ui.module.login.view;
 import com.teamper.ui.event.UILoginEvent;
 import com.teamper.ui.event.bus.UIEventBus;
 import com.teamper.ui.message.UIMessageManager;
+import com.teamper.ui.model.property.UIStyleProperty;
 import com.teamper.ui.module.login.model.dto.CredentialUIDto;
 import com.teamper.ui.module.login.model.property.LoginMessageProperty;
 import com.teamper.ui.module.login.model.property.LoginStyleProperty;
+import com.teamper.ui.module.register.view.RegisterView;
+import com.teamper.ui.navigation.UINavigator;
 import com.teamper.ui.notification.UINotificationManager;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
@@ -14,6 +17,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringView(name = LoginView.NAME)
@@ -29,6 +33,9 @@ public class LoginView extends VerticalLayout implements View {
 
     @Autowired
     private UIMessageManager uiMessageManager;
+
+    @Autowired
+    private UINavigator uiNavigator;
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
@@ -51,50 +58,50 @@ public class LoginView extends VerticalLayout implements View {
         loginPanel.setSpacing(true);
         Responsive.makeResponsive(loginPanel);
         loginPanel.addStyleName(LoginStyleProperty.LOGIN_PANEL);
-        loginPanel.addComponent(buildLabels());
-        loginPanel.addComponent(buildFields());
-        loginPanel.addComponent(new CheckBox(uiMessageManager.getMessage(LoginMessageProperty.LANG_REMEMBER), true));
+        loginPanel.addComponent(buildPanelLabels());
+        loginPanel.addComponent(buildFormFields());
+        loginPanel.addComponent(buildRemainingComponents());
         return loginPanel;
     }
 
-    private Component buildLabels() {
+    private Component buildPanelLabels() {
         CssLayout labels = new CssLayout();
         labels.addStyleName(LoginStyleProperty.LABELS);
 
         Label welcome = new Label(uiMessageManager.getMessage(LoginMessageProperty.LANG_WELCOME));
         welcome.setSizeUndefined();
-        welcome.addStyleName(LoginStyleProperty.LABEL_H4);
-        welcome.addStyleName(LoginStyleProperty.LABEL_COLORED);
+        welcome.addStyleName(UIStyleProperty.LABEL_H4);
+        welcome.addStyleName(UIStyleProperty.LABEL_COLORED);
         labels.addComponent(welcome);
 
         Label title = new Label(uiMessageManager.getMessage(LoginMessageProperty.LANG_TITLE));
         title.setSizeUndefined();
-        title.addStyleName(LoginStyleProperty.LABEL_H3);
-        title.addStyleName(LoginStyleProperty.LABEL_LIGHT);
+        title.addStyleName(UIStyleProperty.LABEL_H3);
+        title.addStyleName(UIStyleProperty.LABEL_LIGHT);
         labels.addComponent(title);
         return labels;
     }
 
-    private Component buildFields() {
-        VerticalLayout fields = new VerticalLayout();
-        fields.setSpacing(true);
-        fields.addStyleName(LoginStyleProperty.FIELDS);
+    private Component buildFormFields() {
+        VerticalLayout formFields = new VerticalLayout();
+        formFields.setSpacing(true);
+        formFields.addStyleName(LoginStyleProperty.FIELDS);
 
         final TextField email = new TextField(uiMessageManager.getMessage(LoginMessageProperty.LANG_EMAIL));
         email.setIcon(FontAwesome.ENVELOPE);
-        email.addStyleName(LoginStyleProperty.TEXTFIELD_INLINE_ICON);
+        email.addStyleName(UIStyleProperty.TEXTFIELD_INLINE_ICON);
 
         final PasswordField password = new PasswordField(uiMessageManager.getMessage(LoginMessageProperty.LANG_PASSWORD));
         password.setIcon(FontAwesome.LOCK);
-        password.addStyleName(LoginStyleProperty.TEXTFIELD_INLINE_ICON);
+        password.addStyleName(UIStyleProperty.TEXTFIELD_INLINE_ICON);
 
         final Button signin = new Button(uiMessageManager.getMessage(LoginMessageProperty.LANG_SIGNIN));
-        signin.addStyleName(LoginStyleProperty.BUTTON_PRIMARY);
+        signin.addStyleName(UIStyleProperty.BUTTON_PRIMARY);
         signin.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         signin.focus();
 
-        fields.addComponents(email, password, signin);
-        fields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
+        formFields.addComponents(email, password, signin);
+        formFields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
 
         signin.addClickListener((Button.ClickListener) event -> {
             UILoginEvent uiLoginEvent = new UILoginEvent();
@@ -104,7 +111,21 @@ public class LoginView extends VerticalLayout implements View {
             uiLoginEvent.setCredentialUIDto(credentialUIDto);
             uiEventBus.post(uiLoginEvent);
         });
-        return fields;
+        return formFields;
+    }
+
+    private Component buildRemainingComponents() {
+        VerticalLayout remainingFields = new VerticalLayout();
+        remainingFields.setSpacing(true);
+        remainingFields.addComponent(new CheckBox(uiMessageManager.getMessage(LoginMessageProperty.LANG_REMEMBER), true));
+        Button signUpButton = new Button(uiMessageManager.getMessage(LoginMessageProperty.LANG_SIGNUP));
+        signUpButton.setSizeUndefined();
+        signUpButton.addStyleName(ValoTheme.BUTTON_TINY);
+        signUpButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+        signUpButton.addClickListener((Button.ClickListener) event -> uiNavigator.navigateTo(RegisterView.NAME));
+        remainingFields.addComponent(signUpButton);
+        remainingFields.setComponentAlignment(signUpButton, Alignment.BOTTOM_LEFT);
+        return remainingFields;
     }
 
 }
